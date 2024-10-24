@@ -1,10 +1,3 @@
-# TODO: ci sarà il repository vche conterrà le istanze di tutti gli oggetti in un unico dizionazio poi i singoli oggetti che sono strutturati conterrano solo gli id
-#       dei loro delle loro istanze
-#       ossia Box ad esempio conterrà una lista di id di oggetti CardStatus che si trovano nel repository
-#       il vantaggio di questa organizzazione è:
-#           salvataggio e caricamento semplice con json
-#           ogni oggetto reperibile da chiunque basta passare un riferimento al repository
-
 import json
 import repr_utils as ru
 
