@@ -1,11 +1,10 @@
-import repr_utils as ru
-import date_time_utils as dtu
-from memome_object import MemoMeObject
+from memome.utils import repr_utils as ru, date_time_utils as dtu
+from base_obj import BaseObj
 from card_state import CardState
 from card_status import CardStatus
 
 
-class Box(MemoMeObject):
+class Box(BaseObj):
     def __init__(self, s_title: str, i_review_frequency: int, s_obj_id: str):
         super().__init__(s_obj_id, "Box")
         self.s_title: str = s_title
@@ -62,7 +61,6 @@ class Box(MemoMeObject):
 
 if __name__ == '__main__':
     from utils import generate_id
-    from pprint import pprint
 
     cs0 = CardStatus(generate_id("USER_", "_ID"), generate_id("CARD_", "_ID"), dtu.now_date_time(), generate_id("CARD_STATUS", "_ID"))
     cs1 = CardStatus(generate_id("USER_", "_ID"), generate_id("CARD_", "_ID"), dtu.now_date_time(), generate_id("CARD_STATUS", "_ID"))

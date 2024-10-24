@@ -1,11 +1,10 @@
-from utils import generate_id
-import repr_utils as ru
+from memome.utils import repr_utils as ru
 from card_front import CardFront
 from card_back import CardBack
-from memome_object import MemoMeObject
+from base_obj import BaseObj
 
 
-class Card(MemoMeObject):
+class Card(BaseObj):
     def __init__(self, s_title: str, c_front: CardFront, c_back: CardBack, s_obj_id: str):
         super().__init__(s_obj_id, "Card")
         self.s_title: str = s_title

@@ -1,8 +1,8 @@
-from memome_object import MemoMeObject
-import repr_utils as ru
+from base_obj import BaseObj
+from memome.utils import repr_utils as ru
 
 
-class CardBack(MemoMeObject):
+class CardBack(BaseObj):
     def __init__(self, s_back: str, s_obj_id: str):
         super().__init__(s_obj_id, "CardBack")
         self.s_back: str = s_back

@@ -1,10 +1,9 @@
-from utils import generate_id
-import repr_utils as ru
-from memome_object import MemoMeObject
+from memome.utils import repr_utils as ru
+from base_obj import BaseObj
 from box import Box
 
 
-class Leitner(MemoMeObject):
+class Leitner(BaseObj):
     def __init__(self, s_title: str, s_obj_id):
         super().__init__(s_obj_id, "Leitner")
         self.s_title: str = s_title

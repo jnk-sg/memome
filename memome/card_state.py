@@ -1,4 +1,4 @@
-from sgs_enum import SGSEnum
+from memome.utils.sgs_enum import SGSEnum
 
 
 class CardState(SGSEnum):

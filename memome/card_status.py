@@ -1,10 +1,9 @@
-from utils import generate_id
-import repr_utils as ru
+from memome.utils import repr_utils as ru
 
-from memome_object import MemoMeObject
+from base_obj import BaseObj
 
 
-class CardStatus(MemoMeObject):
+class CardStatus(BaseObj):
     def __init__(self, s_user_id: str, s_card_id: str, s_insert_date: str, s_obj_id: str):
         super().__init__(s_obj_id, "CardStatus")
         self.s_user_id: str = s_user_id

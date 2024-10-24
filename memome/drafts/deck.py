@@ -1,4 +1,4 @@
-import repr_utils as ru
+from memome.utils import repr_utils as ru
 from memome_object import MemoMeObject
 from card import Card
 

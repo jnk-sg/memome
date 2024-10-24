@@ -9,24 +9,18 @@ Note:
 #       quali sono i nomi delle variabili
 
 import json
-import pprint
 
-from loguru import logger
-
-from utils import generate_id
-from sgs_enum import SGSEnum
-import repr_utils as ru
-import date_time_utils as dtu
+from memome.utils import repr_utils as ru
 
 from leitner import Leitner
-from card_user import CardUser
+from user import User
 
 
 class MemoMe:
     def __init__(self,s_repository_file_path_name: str):
         self.s_repository_file_path_name: str = s_repository_file_path_name
         self.l_leitner: Leitner = None
-        self.l_user: CardUser = None
+        self.l_user: User = None
 
     def __str__(self) -> str:
         return ru.obj_to_str(self, "MemoMe", 0)
