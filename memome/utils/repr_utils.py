@@ -67,11 +67,11 @@ def obj_to_str(obj: object, s_obj_name: str, i_deep_level: int) -> str:
     elif type(obj) is dict:  # If the dict keys aren't str or int this fail !!!
         s_obj_str = (cr.Fore.YELLOW + "\t" * i_deep_level + s_obj_name +
                      cr.Fore.GREEN + ": " + cr.Fore.BLUE + "dict" +
-                     cr.Fore.GREEN + " = \n")
+                     cr.Fore.GREEN + " = { \n")
         for key in obj.keys():
             key_to_pass = key if type(key) is str else str(key)  # if the key is an int HERE fail so I must convert it
             s_obj_str += obj_to_str(obj[key], key_to_pass, i_deep_level + 1)
-        return s_obj_str
+        return s_obj_str + cr.Fore.GREEN + "\t" * i_deep_level + "}\n"
     elif obj is None:
         logger.error("TODO: write code for NoneType !!!")
         return "NO REPR"

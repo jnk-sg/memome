@@ -1,7 +1,7 @@
 from memome.utils import repr_utils as ru
+from base_obj import BaseObj
 from card_front import CardFront
 from card_back import CardBack
-from base_obj import BaseObj
 
 
 class Card(BaseObj):

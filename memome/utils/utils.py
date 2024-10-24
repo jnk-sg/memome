@@ -12,11 +12,11 @@ L_ALPHA_NUM = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
                'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
                'u', 'v', 'w', 'x', 'y', 'z']
-ID_LEN = 16
+ID_LEN = 2
 
 
-def generate_id(s_id_prefix: str = "", s_id_postfix: str = "") -> str:
-    return s_id_prefix + "".join(choices(L_ALPHA_NUM, k=ID_LEN)) + s_id_postfix
+def generate_id(s_id_prefix: str = "", s_id_postfix: str = "", i_id_len: int = ID_LEN) -> str:
+    return s_id_prefix + "".join(choices(L_ALPHA_NUM, k=i_id_len)) + s_id_postfix
 
 
 if __name__ == "__main__":
