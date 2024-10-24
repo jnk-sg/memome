@@ -23,6 +23,20 @@ class ObjectsRepository:
             raise ValueError(f"Un oggetto con chiave '{s_obj_id}' esiste già.")
         self._items[s_obj_id] = item
 
+    def add_from_json(self, s_obj_id: str, d_obj_data: dict) -> None:
+        """ Dato un dizionario nel quale esiste una chiave s_obj_type il cui valore è il nome del tipo di oggetto da creare
+            la funzione prende dal dizionario i nomi dei parametri e i corrispettivi valore
+            le concatena in una unica stringa ci aggiunge il come della classe all'inizio e poi chiama eval per la valutazione
+
+            esmpio: d_obj_data = {'s_obj_type': 'CardUser', 's_user_id': 'USER_a5fqtt9zimbfzp8o_ID', 's_user_name': 'Pippo', 's_user_pwd': 'pippo_pwd'}
+            s_constructor_params == s_user_id='USER_pevgciqro12vkagi_ID', s_user_name='Pippo', s_user_pwd='pippo_pwd'
+            f"{s_class_type_name}({s_constructor_params})" == CardUser(s_user_id='USER_cngp67iroa3rj625_ID', s_user_name='Pippo', s_user_pwd='pippo_pwd')
+        """
+        s_class_type_name = d_obj_data.pop('s_obj_type')
+        s_constructor_params = ', '.join(f"{k}='{v}'" for k, v in d_obj_data.items())
+        c_class_instance = eval(f"{s_class_type_name}({s_constructor_params})")
+        self._items[s_obj_id] = c_class_instance
+
     def remove(self, s_obj_id: str) -> None:
         """Rimuove un oggetto dal repository usando la chiave."""
         if s_obj_id not in self._items:
@@ -59,20 +73,6 @@ class ObjectsRepository:
     def save_repository(self) -> None:
         with open(self.s_repository_file_path_name, "w") as data_file:
             json.dump(self.to_json(), data_file)
-
-    def add_from_json(self, d_obj_data: dict) -> None:
-        """ Dato un dizionario nel quale esiste una chiave s_obj_type il cui valore è il nome del tipo di oggetto da creare
-            la funzione prende dal dizionario i nomi dei parametri e i corrispettivi valore
-            le concatena in una unica stringa ci aggiunge il come della classe all'inizio e poi chiama eval per la valutazione
-
-            esmpio: d_obj_data = {'s_obj_type': 'CardUser', 's_user_id': 'USER_a5fqtt9zimbfzp8o_ID', 's_user_name': 'Pippo', 's_user_pwd': 'pippo_pwd'}
-            s_constructor_params == s_user_id='USER_pevgciqro12vkagi_ID', s_user_name='Pippo', s_user_pwd='pippo_pwd'
-            f"{s_class_type_name}({s_constructor_params})" == CardUser(s_user_id='USER_cngp67iroa3rj625_ID', s_user_name='Pippo', s_user_pwd='pippo_pwd')
-        """
-        s_class_type_name = d_obj_data.pop('s_obj_type')
-        s_constructor_params = ', '.join(f"{k}='{v}'" for k, v in d_obj_data.items())
-        c_class_instance = eval(f"{s_class_type_name}({s_constructor_params})")
-        self._items[c_class_instance.s_id] = c_class_instance
 
 
 if __name__ == "__main__":

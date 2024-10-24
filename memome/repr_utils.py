@@ -1,4 +1,5 @@
-import enum
+# TODO: 1 - nel caso si rappresenti un dizionario mettere dopo il nome del dizionario { e alla fine } una cosa simili per le liste ed i sets
+
 import colorama as cr
 from loguru import logger
 

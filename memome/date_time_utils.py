@@ -5,7 +5,7 @@
 
 from PySide6.QtCore import QDateTime
 
-DATE_TIME_FORMAT = "yyyy-MM-dd - HH:mm:ss"
+DATE_TIME_FORMAT = "yyyy-MM-dd-HH:mm:ss"
 
 
 def delta_hours(s_first_date: str, s_second_date: str) -> int:

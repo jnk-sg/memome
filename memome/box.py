@@ -1,6 +1,13 @@
-class Box:
-    def __init__(self, s_title: str, i_review_frequency: int, s_box_id: str = ""):
-        self.s_box_id: str = generate_id("BOX_", "_ID") if not s_box_id else s_box_id
+import repr_utils as ru
+import date_time_utils as dtu
+from memome_object import MemoMeObject
+from card_state import CardState
+from card_status import CardStatus
+
+
+class Box(MemoMeObject):
+    def __init__(self, s_title: str, i_review_frequency: int, s_obj_id: str):
+        super().__init__(s_obj_id, "Box")
         self.s_title: str = s_title
         self.i_review_frequency: int = i_review_frequency
         self.d_cards_status: dict = {}
@@ -11,8 +18,8 @@ class Box:
     def add_card_status(self, new_card_status: CardStatus) -> None:
         self.d_cards_status[new_card_status.s_card_id] = new_card_status
 
-    def remove_card_status(self, s_id: str) -> None:
-        self.d_cards_status.pop(s_id)
+    def remove_card_status(self, s_card_status_id: str) -> CardStatus:
+        return self.d_cards_status.pop(s_card_status_id)
 
     def get_cards_status(self, s_user_id: str) -> list:
         l_cards_status = []
@@ -42,15 +49,27 @@ class Box:
                 c_status.e_card_state = CardState.OUT_OF_DATE
 
     def to_json(self) -> dict:
-        d_box = {
-            "s_box_id": self.s_box_id,
-            "s_title": self.s_title,
-            "i_review_frequency": self.i_review_frequency,
-            "d_cards_status": {}
-        }
+        d_box: dict = super().to_json()
+        d_box["s_title"] = self.s_title
+        d_box["i_review_frequency"] = self.i_review_frequency
+        d_box["s_title"] = self.s_title
+        d_box["d_cards_status"] = {}
         for key in self.d_cards_status.keys():
-            card: CardStatus = self.d_cards_status[key]
-            d_box["d_cards_status"][card.s_status_id] = card.to_json()
+            c_card_status: CardStatus = self.d_cards_status[key]
+            d_box["d_cards_status"][c_card_status.s_obj_id] = c_card_status.to_json()
         return d_box
 
 
+if __name__ == '__main__':
+    from utils import generate_id
+    from pprint import pprint
+
+    cs0 = CardStatus(generate_id("USER_", "_ID"), generate_id("CARD_", "_ID"), dtu.now_date_time(), generate_id("CARD_STATUS", "_ID"))
+    cs1 = CardStatus(generate_id("USER_", "_ID"), generate_id("CARD_", "_ID"), dtu.now_date_time(), generate_id("CARD_STATUS", "_ID"))
+    cs2 = CardStatus(generate_id("USER_", "_ID"), generate_id("CARD_", "_ID"), dtu.now_date_time(), generate_id("CARD_STATUS", "_ID"))
+
+    box = Box("Box Primo", 1, generate_id("BOX_"))
+    box.add_card_status(cs0)
+    box.add_card_status(cs1)
+
+    print(box)
