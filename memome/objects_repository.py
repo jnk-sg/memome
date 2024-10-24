@@ -1,10 +1,18 @@
+# TODO: ci sarà il repository vche conterrà le istanze di tutti gli oggetti in un unico dizionazio poi i singoli oggetti che sono strutturati conterrano solo gli id
+#       dei loro delle loro istanze
+#       ossia Box ad esempio conterrà una lista di id di oggetti CardStatus che si trovano nel repository
+#       il vantaggio di questa organizzazione è:
+#           salvataggio e caricamento semplice con json
+#           ogni oggetto reperibile da chiunque basta passare un riferimento al repository
+
+import json
 import repr_utils as ru
 
 
 class ObjectsRepository:
     def __init__(self, s_repository_file_path_name: str):
-        self.s_repository_file_path_name: s_repository_file_path_name
-        self._items = {}
+        self.s_repository_file_path_name: str= s_repository_file_path_name
+        self._items: dict = {}
 
     def __str__(self) -> str:
         return ru.obj_to_str(self, "ObjectsRepository", 0)
@@ -46,31 +54,25 @@ class ObjectsRepository:
         return d_json_repr
 
     def load_repository(self) -> None:
-        """
-        # creazione dinamica di una classe
-
-        dati: dict = u0.to_json()
-        pprint.pprint(dati)
-
-        # Passo 1: Estrai il nome della classe dal dizionario
-        nome_classe = dati.pop('s_obj_type')  # 'CardUser'
-
-        # Passo 2: Usa eval per creare l'istanza dinamicamente
-        # Unisci i parametri del dizionario in una stringa da passare a eval
-        params = ', '.join(f"{k}='{v}'" for k, v in dati.items())
-
-        # Passo 3: Crea dinamicamente l'istanza con eval()
-        istanza = eval(f"{nome_classe}({params})")
-
-        # Verifica il risultato
-        print(istanza)  # Output: CardUser(s_user_id=USER_cy511y06gtnrxtoq_ID, s_user_name=Ste, s_user_pwd=pwd_ste)
-        """
         pass
 
     def save_repository(self) -> None:
-        pass
+        with open(self.s_repository_file_path_name, "w") as data_file:
+            json.dump(self.to_json(), data_file)
 
+    def add_from_json(self, d_obj_data: dict) -> None:
+        """ Dato un dizionario nel quale esiste una chiave s_obj_type il cui valore è il nome del tipo di oggetto da creare
+            la funzione prende dal dizionario i nomi dei parametri e i corrispettivi valore
+            le concatena in una unica stringa ci aggiunge il come della classe all'inizio e poi chiama eval per la valutazione
 
+            esmpio: d_obj_data = {'s_obj_type': 'CardUser', 's_user_id': 'USER_a5fqtt9zimbfzp8o_ID', 's_user_name': 'Pippo', 's_user_pwd': 'pippo_pwd'}
+            s_constructor_params == s_user_id='USER_pevgciqro12vkagi_ID', s_user_name='Pippo', s_user_pwd='pippo_pwd'
+            f"{s_class_type_name}({s_constructor_params})" == CardUser(s_user_id='USER_cngp67iroa3rj625_ID', s_user_name='Pippo', s_user_pwd='pippo_pwd')
+        """
+        s_class_type_name = d_obj_data.pop('s_obj_type')
+        s_constructor_params = ', '.join(f"{k}='{v}'" for k, v in d_obj_data.items())
+        c_class_instance = eval(f"{s_class_type_name}({s_constructor_params})")
+        self._items[c_class_instance.s_id] = c_class_instance
 
 
 if __name__ == "__main__":
