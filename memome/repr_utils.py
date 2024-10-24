@@ -75,7 +75,6 @@ def obj_to_str(obj: object, s_obj_name: str, i_deep_level: int) -> str:
         logger.error("TODO: write code for NoneType !!!")
         return "NO REPR"
     else:  # if not a built-in type
-        logger.debug(obj.__class__.__name__ + f"{type(s_obj_name)}")
         d_attr = obj.__dict__
         s_obj_str = ("\t" * i_deep_level +
                      cr.Fore.YELLOW + s_obj_name +  # HERE fail if s_obj_name is int

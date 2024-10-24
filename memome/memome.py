@@ -5,6 +5,8 @@ Note:
 
 # TODO:
 #   1 - creare un repository come fatto da chatgpt ma invece che di una stringa c'è l'oggetto
+#   2 - nel module ru mettere il colore dei nomi delle variabili dei dati primiti simile a quello delle altre non proprio uguale ma simile in modo che ho subito a colpo d'occhio
+#       quali sono i nomi delle variabili
 
 import json
 import pprint
@@ -14,7 +16,8 @@ from loguru import logger
 from utils import generate_id
 from sgs_enum import SGSEnum
 import repr_utils as ru
-import date_time_utils as dt
+import date_time_utils as dtu
+from objects_repository import ObjectsRepository
 
 
 class CardState(SGSEnum):
@@ -24,7 +27,7 @@ class CardState(SGSEnum):
 
 
 class CardUser:
-    def __init__(self, s_user_name: str, s_user_pwd: str, s_user_id: str):
+    def __init__(self, s_user_name: str, s_user_pwd: str, s_user_id: str = ""):
         self.s_user_id: str = generate_id("USER_", "_ID") if not s_user_id else s_user_id
         self.s_user_name: str = s_user_name
         self.s_user_pwd: str = s_user_pwd
@@ -34,7 +37,7 @@ class CardUser:
     
     def to_json(self) -> dict:
         return {
-            "s_obj_type:": "CardUser",
+            "s_obj_type": "CardUser",
             "s_user_id": self.s_user_id,
             "s_user_name": self.s_user_name,
             "s_user_pwd": self.s_user_pwd
@@ -73,7 +76,7 @@ class CardBack:
 
 
 class Card:
-    def __init__(self, s_title: str, c_front: CardFront, c_back: CardBack, s_card_id: str):
+    def __init__(self, s_title: str, c_front: CardFront, c_back: CardBack, s_card_id: str = ""):
         self.s_card_id: str = generate_id("CARD_", "_ID") if not s_card_id else s_card_id
         self.s_title: str = s_title
         self.c_front: CardFront = c_front
@@ -92,7 +95,7 @@ class Card:
 
 
 class Deck:
-    def __init__(self, s_title: str,  s_deck_id: str):
+    def __init__(self, s_title: str,  s_deck_id: str = ""):
         self.s_deck_id: str = generate_id("DECK_", "_ID") if not s_deck_id else s_deck_id
         self.s_title: str = s_title
         self.d_cards: dict = {}
@@ -122,12 +125,11 @@ class Deck:
 
 
 class CardStatus:
-    def __init__(self, s_user_id: str, s_card_id: str, s_current_box_id: str, s_insert_date: str, e_card_state: CardState.TO_REVIEW, s_status_id: str):
+    def __init__(self, s_user_id: str, s_card_id: str, s_insert_date: str, s_status_id: str = ""):
         self.s_status_id: str = generate_id("STATUS_", "_ID") if not s_status_id else s_status_id
         self.s_user_id: str = s_user_id
         self.s_card_id: str = s_card_id
         self.s_insert_date: str = s_insert_date
-        self.e_card_state: CardState = e_card_state
 
     def __str__(self) -> str:
         return ru.obj_to_str(self, "CardStatus", 0)
@@ -138,12 +140,11 @@ class CardStatus:
             "s_user_id": self.s_user_id,
             "s_card_id": self.s_card_id,
             "s_insert_date": self.s_insert_date,
-            "e_card_state": self.e_card_state.value
         }
 
 
 class Box:
-    def __init__(self, s_title: str, i_review_frequency: int, s_box_id: str):
+    def __init__(self, s_title: str, i_review_frequency: int, s_box_id: str = ""):
         self.s_box_id: str = generate_id("BOX_", "_ID") if not s_box_id else s_box_id
         self.s_title: str = s_title
         self.i_review_frequency: int = i_review_frequency
@@ -177,7 +178,7 @@ class Box:
     def update_cards_status(self, s_date_time: str):
         for key in self.d_cards_status.keys():
             c_status: CardStatus = self.d_cards_status[key]
-            i_delta_time = dt.delta_hours(s_date_time, c_status.s_insert_date)
+            i_delta_time = dtu.delta_hours(s_date_time, c_status.s_insert_date)
             if i_delta_time < self.i_review_frequency:
                 c_status.e_card_state = CardState.SLEEPING
             elif i_delta_time == self.i_review_frequency:
@@ -199,7 +200,7 @@ class Box:
 
 
 class Leitner:
-    def __init__(self, s_title: str, s_leitner_id: str):
+    def __init__(self, s_title: str, s_leitner_id: str = ""):
         self.s_leitner_id: str = generate_id("LEITNER_","_ID") if not s_leitner_id else s_leitner_id
         self.s_title: str = s_title
         self.d_boxes: dict = {}
@@ -245,41 +246,23 @@ class Leitner:
         self.d_boxes = []
 
 
-class ObjectsRepository:
-    def __init__(self):
-        self.d_repository: dict = {}
-
-    def __str__(self) -> str:
-        return ru.obj_to_str(self, "ObjectsRepository", 0)
-
-    def add_obj(self, obj: object) -> None:
-        self.d_repository[obj.]
-
-    def rem_obj(self, s_obj_id: str) -> None:
-        pass
-
-    def get_obj(self, s_obj_id: str) -> object:
-        pass
-
-
 if __name__ == "__main__":
+    obj_rep = ObjectsRepository("./repository.json")
+
     # TODO: mettere su un sistema grafico semplice per testare il tutto con dati immessi manualmente
+    c0 = Card("Carta 0", CardFront("Fronte 0"), CardBack("Back 0"))
+    c1 = Card("Carta 1", CardFront("Fronte 1"), CardBack("Back 1"))
+    c2 = Card("Carta 2", CardFront("Fronte 2"), CardBack("Back 2"))
+    d0 = Deck("Mazzo 0")
+    d0.add_card(c0)
+    d0.add_card(c1)
+    d0.add_card(c2)
 
-    carta_0 = Card("", "Carta 0", CardFront("Fronte 0"), CardBack("Back 0"))
-    carta_1 = Card("", "Carta 0", CardFront("Fronte 1"), CardBack("Back 1"))
-    carta_2 = Card("", "Carta 0", CardFront("Fronte 2"), CardBack("Back 2"))
-    carta_3 = Card("", "Carta 0", CardFront("Fronte 3"), CardBack("Back 3"))
-    carta_4 = Card("", "Carta 0", CardFront("Fronte 4"), CardBack("Back 4"))
+    u0 = CardUser("Ste", "pwd_ste")
+    cs0 = CardStatus(u0.s_user_id, c0.s_card_id, dtu.now_date_time())
+    cs2 = CardStatus(u0.s_user_id, c1.s_card_id, dtu.now_date_time())
+    cs1 = CardStatus(u0.s_user_id, c2.s_card_id, dtu.now_date_time())
 
-    mazzo_0 = Deck("", "Mazzo 0")
-    mazzo_0.add_card(carta_0)
-    mazzo_0.add_card(carta_1)
-
-    user_0 = CardUser("", "Pippo", "pwd_pippo")
-
-    box_0 = Box("", "Prima Scatola", 1)
-    box_0.add_card_status(CardStatus("", user_0.s_user_id, carta_0.s_card_id, box_0.s_box_id, dt.now_date_time(), CardState.TO_REVIEW))  # c'è un errore
-    # e poi non capisco bene se fare una factory alla quale chidere gli oggetti e trasmettere la facotri oppure passare gli oggetti o passare gli ids
-
-    pprint.pprint(mazzo_0.to_json())
-    ru.obj_to_str(box_0.d_cards_status, "STATUS", 0)
+    # TODO: creazione dei vari moduli uno per ogni classe
+    # TODO: terminare la creazione del repository con save e load
+    # TODO: spostare il save e load di Leitner nel repository
