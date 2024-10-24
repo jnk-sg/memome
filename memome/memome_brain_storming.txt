@@ -1,0 +1,20 @@
+Considerazioni varie:
+
+1 - Numero dei BOX
+    a - all'inizio sarà fisso
+        in futuro potrebbe essere
+            deciso dall'utente che si costruisce il proprio Leitner
+            e decide anche quanti giorni vale ogni box
+    b - box
+        1 - dopo 1 giorno rispetto alla data di inserimento (1 rispetto all'inizio)
+	    2 - dopo 2 giorni rispetto alla data di inserimento (3 rispetto all'inizio)
+	    3 - dopo 3 giorni rispetto alla data di inserimento (6 rispetto all'inizio)
+	    4 - dopo 7 giorni rispetto alla data di inserimento (13 rispetto all'inizio)
+	    5 - dopo 14 giorni rispetto alla data di inserimento
+	    6 - dopo 30 giorni rispetto alla data di inserimento
+	    7 - dopo 6 mesi rispetto alla data di inserimento
+	    8 - dopo un anno rispetto alla data di inserimento
+	    9 - se una card arriva ad essere ripetuta perfettamente dopo un anno che non la vediamo la facciamo uscire dalla scatola
+
+	    quindi 8 scatole operative e la 9° come deposito della conoscenza acquisita
+		magari ogni volta che ripeto ripesco anche una carta dalla 9° così tanto per vedere se la so
